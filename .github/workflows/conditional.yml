@@ -1,0 +1,21 @@
+name: conditional workflow
+on:
+  push
+jobs:
+  initial_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Run a command
+        run: echo "this is the initial job"
+  conditional_job:
+    runs-on: ubuntu-latest
+    needs: initial_job
+    steps:
+      - name: Execute on specific condition
+        run: echo "this step runs because the condition is true"
+        if: github.ref == 'refs/heads/main'
+      - name: Alternative step for false condition
+        run: echo "this step would run if the above condition is false"
+        if: github.ref != 'refs/heads/main'
